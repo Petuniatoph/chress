@@ -1,0 +1,37 @@
+package com.chress;
+
+/**
+ * - com.chress.Window with JFrame for Chress
+ *
+ * @author Christoph Schobesberger
+ * @version 1.0
+ */
+
+import javax.swing.*;
+import java.awt.*;
+
+
+public class Window extends Canvas
+{
+    JFrame jFrame;
+
+
+    public Window(String title, int width, int height, Game game)
+    {
+
+        jFrame = new JFrame(title);
+        jFrame.setPreferredSize(new Dimension(width, height));
+        jFrame.setMinimumSize(new Dimension(width, height));
+        jFrame.setMaximumSize(new Dimension(width, height));
+        jFrame.setLocationRelativeTo(null);
+        jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
+        jFrame.setResizable(false);
+        jFrame.setVisible(true);
+        jFrame.add(game);
+        game.start();
+    }
+
+
+
+
+}
