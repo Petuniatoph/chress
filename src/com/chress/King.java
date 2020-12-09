@@ -1,13 +1,16 @@
 package com.chress;
 
-import com.chress.enums.ColorBW;
 import com.chress.enums.Type;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
 
 public class King extends Piece
 {
-    King(ColorBW colorBW, int x, int y, PieceHandler pieceHandler)
+    King(Color color, int x, int y, PieceHandler pieceHandler)
     {
-        super(Type.KING, colorBW,x ,y ,pieceHandler);
+        super(Type.KING, color,x ,y ,pieceHandler, "king");
     }
 
 }

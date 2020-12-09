@@ -1,5 +1,8 @@
 package com.chress;
 
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
 /**
  * - Implements com.chress.Game Loop
  *
@@ -7,13 +10,10 @@ package com.chress;
  * @version 1.0
  */
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
-
 public class Game extends Canvas implements Runnable
 {
-    private final int WIDTH = 640;
-    private final int HEIGHT = 640;
+    private final int WIDTH = 750;
+    private final int HEIGHT = 636;
     private final int BOARD = 75;
     private boolean running;
     private Thread thread;
@@ -71,7 +71,7 @@ public class Game extends Canvas implements Runnable
             if (System.currentTimeMillis() - timer > 1000)
             {
                 timer += 1000;
-                System.out.println("FPS: " + frames);
+                //System.out.println("FPS: " + frames);
                 frames = 0;
             }
         }
@@ -88,6 +88,8 @@ public class Game extends Canvas implements Runnable
         }
 
         Graphics g = bs.getDrawGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0, WIDTH, HEIGHT);
         drawBoard(g);
 
         pieceHandler.render(g);
@@ -116,7 +118,7 @@ public class Game extends Canvas implements Runnable
                     color = false;
                 } else
                 {
-                    g.setColor(Color.BLACK);
+                    g.setColor(new Color(92,196,97));
                     color = true;
                 }
                 g.fillRect(pos_x * BOARD, pos_y * BOARD, BOARD, BOARD);
