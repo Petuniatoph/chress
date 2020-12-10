@@ -1,6 +1,8 @@
 package com.chress;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 
 /**
@@ -22,6 +24,42 @@ public class Game extends Canvas implements Runnable
     Game()
     {
         this.pieceHandler = new PieceHandler();
+        this.addMouseListener(new MouseListener()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                int x = e.getX()/75;
+                int y = e.getY()/75;
+                pieceHandler.movePiece(x, y);
+                System.out.println(x);
+                System.out.println(y);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e)
+            {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e)
+            {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e)
+            {
+
+            }
+        });
         new Window("Chress - Christoph's Chess", WIDTH, HEIGHT, this);
     }
 
@@ -99,6 +137,12 @@ public class Game extends Canvas implements Runnable
 
     }
 
+    public void selectPiece(int x, int y)
+    {
+
+    }
+
+
     private void tick()
     {
         pieceHandler.tick();
@@ -127,6 +171,7 @@ public class Game extends Canvas implements Runnable
             color = !color;
         }
     }
+
 
     //TODO place Main somewhere else
     public static void main(String[] args)

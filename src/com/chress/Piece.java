@@ -147,10 +147,7 @@ public abstract class Piece
      * @return LEGAL:
      */
 
-    private Flag validateTarget(int x, int y)
-    {
-        return Flag.LEGAL;
-    }
+    protected abstract Flag validateTarget(int x, int y);
 
     /**
      * validateMove

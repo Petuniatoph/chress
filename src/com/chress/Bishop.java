@@ -5,11 +5,12 @@ import com.chress.enums.Type;
 
 import java.awt.*;
 
-public class King extends Piece
+public class Bishop extends Piece
 {
-    King(Color color, int x, int y, PieceHandler pieceHandler)
+
+    Bishop(Color color, int x, int y, PieceHandler pieceHandler)
     {
-        super(Type.KING, color,x ,y ,pieceHandler, "king");
+        super(Type.BISHOP, color, x, y, pieceHandler, "bishop");
     }
 
     @Override

@@ -9,16 +9,16 @@ package com.chress;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 public class Window extends Canvas
 {
     JFrame jFrame;
 
-
     public Window(String title, int width, int height, Game game)
     {
-
         jFrame = new JFrame(title);
         jFrame.setPreferredSize(new Dimension(width, height));
         jFrame.setMinimumSize(new Dimension(width, height));
@@ -28,10 +28,7 @@ public class Window extends Canvas
         jFrame.setResizable(false);
         jFrame.setVisible(true);
         jFrame.add(game);
+
         game.start();
     }
-
-
-
-
 }

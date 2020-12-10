@@ -5,16 +5,17 @@ import com.chress.enums.Type;
 
 import java.awt.*;
 
-public class King extends Piece
+public class Pawn extends Piece
 {
-    King(Color color, int x, int y, PieceHandler pieceHandler)
+
+    Pawn(Color color, int x, int y, PieceHandler pieceHandler)
     {
-        super(Type.KING, color,x ,y ,pieceHandler, "king");
+        super(Type.BISHOP, color, x, y, pieceHandler, "pawn");
     }
 
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        return Flag.LEGAL;
     }
 }

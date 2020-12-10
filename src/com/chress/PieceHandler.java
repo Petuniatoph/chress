@@ -1,5 +1,7 @@
 package com.chress;
 
+import com.chress.enums.Flag;
+
 import java.awt.*;
 import java.util.LinkedList;
 
@@ -13,10 +15,10 @@ import java.util.LinkedList;
 public class PieceHandler
 {
     //TODO make list final
-    private LinkedList<Piece> player1;
-    private LinkedList<Piece> player2;
-    Piece selectedPiece;
-    private final Color currentPlayer;
+    private final LinkedList<Piece> player1;
+    private final LinkedList<Piece> player2;
+    private Piece selectedPiece = null;
+    private Color currentPlayer;
 
     public PieceHandler()
     {
@@ -24,9 +26,35 @@ public class PieceHandler
         player1 = new LinkedList<>();
         player2 = new LinkedList<>();
 
-        //TODO add Pieces
-        player1.add(new King(Color.BLACK, 4,7,this));
-        player1.add(new King(Color.WHITE, 4,0,this));
+        // WHITE - DON'T CHANGE KING
+        player1.add(new King(Color.WHITE, 4,7,this));
+        for(int i = 0; i < 8; i++)
+        {
+            player1.add(new Pawn(Color.WHITE, i, 6, this));
+        }
+        player1.add(new Rook(Color.WHITE, 0,7,this));
+        player1.add(new Knight(Color.WHITE, 1,7,this));
+        player1.add(new Bishop(Color.WHITE, 2,7,this));
+        player1.add(new Queen(Color.WHITE, 3,7,this));
+        player1.add(new Bishop(Color.WHITE, 5,7,this));
+        player1.add(new Knight(Color.WHITE, 6,7,this));
+        player1.add(new Rook(Color.WHITE, 7,7,this));
+
+        // BLACK - DON'T CHANGE KING
+        player2.add(new King(Color.BLACK, 4,0,this));
+        for(int i = 0; i < 8; i++)
+        {
+            player2.add(new Pawn(Color.BLACK, i, 1, this));
+        }
+        player2.add(new Rook(Color.BLACK, 0,0,this));
+        player2.add(new Knight(Color.BLACK, 1,0,this));
+        player2.add(new Bishop(Color.BLACK, 2,0,this));
+        player2.add(new Queen(Color.BLACK, 3,0,this));
+        player2.add(new Bishop(Color.BLACK, 5,0,this));
+        player2.add(new Knight(Color.BLACK, 6,0,this));
+        player2.add(new Rook(Color.BLACK, 7,0,this));
+
+
 
     }
 
@@ -105,10 +133,54 @@ public class PieceHandler
         for(int i = 0; i < player1.size(); i++)
         {
             player1.get(i).render(g);
-            //player2.get(i).render(g);
-
+            player2.get(i).render(g);
+        }
+        if(selectedPiece != null)
+        {
+            g.setColor(Color.RED);
+            g.drawRect(75*selectedPiece.getX(),75*selectedPiece.getY(), 75, 75);
         }
     }
+
+    public synchronized void movePiece(int x, int y)
+    {
+        Piece tempPiece = selectPiece(x, y);
+        if(selectedPiece != null)
+        {
+            if(tempPiece == null)
+            {
+                if(selectedPiece.movePiece(x,y) != Flag.ILLEGAL) return;
+                selectedPiece = null;
+                nextPlayer();
+                return;
+            }
+            if(tempPiece.getColor() == currentPlayer)
+            {
+                selectedPiece = tempPiece;
+                return;
+            }
+            if(selectedPiece.movePiece(x,y) != Flag.ILLEGAL) return;
+            selectedPiece = null;
+            nextPlayer();
+            return;
+        }
+        if(tempPiece == null) return;
+        if(tempPiece.getColor() == currentPlayer)
+        {
+            selectedPiece = tempPiece;
+        }
+    }
+
+    public synchronized void nextPlayer()
+    {
+        if(currentPlayer == Color.WHITE)
+        {
+            currentPlayer = Color.BLACK;
+            return;
+        }
+        currentPlayer = Color.WHITE;
+    }
+
 
     public void tick()
     {
