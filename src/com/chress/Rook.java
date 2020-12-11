@@ -16,6 +16,14 @@ public class Rook extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        if(this.x == x && this.y == y)
+        {
+            return Flag.ILLEGAL;
+        }
+        if(this.y == y || this.x == x)
+        {
+            return Flag.LEGAL;
+        }
+        return Flag.ILLEGAL;
     }
 }

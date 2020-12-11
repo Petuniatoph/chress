@@ -16,6 +16,11 @@ public class Bishop extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        if(Math.abs(this.x - x) != Math.abs(this.y - y))
+        {
+            return Flag.ILLEGAL;
+        }
+
+        return Flag.LEGAL;
     }
 }

@@ -17,16 +17,15 @@ import java.io.File;
 
 public abstract class Piece
 {
-    private int x;
-    private int y;
-    private final Type type;
-    private boolean isAlive;
-    private final Color color;
-    private final char pieceCharacter;
+    protected int x;
+    protected int y;
+    protected final Type type;
+    protected boolean isAlive;
+    protected final Color color;
+    protected final char pieceCharacter;
     protected BufferedImage image;
-    //TODO Add Image
 
-    private final PieceHandler pieceHandler;
+    protected final PieceHandler pieceHandler;
 
     Piece(Type type, Color color, int x, int y, PieceHandler pieceHandler, String fileName)
     {
@@ -119,9 +118,11 @@ public abstract class Piece
         else
         {
             hit = true;
+            this.x = x;
+            this.y = y;
             targetPiece.setAlive(false);
             targetPiece.setX(-1);
-            targetPiece.setX(-1);
+            targetPiece.setY(-1);
         }
         tempFlag = validateKing();
         if(tempFlag == Flag.ILLEGAL)
@@ -163,7 +164,7 @@ public abstract class Piece
 
         if(targetPiece != null)
         {
-            if(targetPiece.getColor() == pieceHandler.getCurrentPlayer())
+            if(targetPiece.getColor() == color)
             {
                 System.out.println("MOVE PIECE: target is same color");
                 return Flag.ILLEGAL;
@@ -194,9 +195,8 @@ public abstract class Piece
      * @return LEGAL or ILLEGAL
      */
 
-    private Flag validateMovement(int startX, int startY, int endX, int endY)
+    public Flag validateMovement(int startX, int startY, int endX, int endY)
     {
-        System.out.println("VALIDATE MOVEMENT");
         switch (getDirection(startX, startY, endX, endY))
         {
             case UP:
@@ -234,8 +234,6 @@ public abstract class Piece
         {
             return Flag.ILLEGAL;
         }
-        System.out.print("Piece " + pieceCharacter + " moves to ");
-        System.out.println("X:" + startX + " Y: " + startY);
         return validateMovement(startX, startY, endX, endY);
 
 
@@ -259,7 +257,7 @@ public abstract class Piece
         // RIGHT
         if (startX < endX && startY == endY) return Direction.RIGHT;
         // DOWN RIGHT
-        if(startX < endX && startY < endY) return Direction.DOWN_RIGHT;
+        if(startX < endX) return Direction.DOWN_RIGHT;
         // DOWN
         if(startX == endX && startY < endY) return Direction.DOWN;
         // LEFT DOWN
@@ -267,7 +265,7 @@ public abstract class Piece
         // LEFT
         if(startX > endX && startY == endY) return Direction.LEFT;
         // UP LEFT
-        if(startX > endX && startY > endY) return Direction.UP_LEFT;;
+        if(startX > endX) return Direction.UP_LEFT;;
         return Direction.NONE;
     }
 
@@ -291,7 +289,7 @@ public abstract class Piece
             return Flag.ILLEGAL;
         }
 
-        king_player = pieceHandler.getPieceByIndex(pieceHandler.getCurrentPlayer(), 0);
+        king_player = pieceHandler.getPieceByIndex(notPlayer, 0);
         king_x = king_player.getX();
         king_y = king_player.getY();
 
@@ -303,7 +301,13 @@ public abstract class Piece
         return Flag.LEGAL;
     }
 
-
+    /**
+     *
+     * @param color
+     * @param king_x
+     * @param king_y
+     * @return
+     */
 
     private boolean moveToKing(Color color, int king_x, int king_y)
     {
@@ -331,12 +335,7 @@ public abstract class Piece
 
     public void render(Graphics g)
     {
-        //if(color == Color.BLACK) g.setColor(Color.red);
-        //if(color == Color.WHITE) g.setColor(Color.blue);
-        //g.fillRect(x * 75 + 25, y * 75 + 25, 25, 25);
-
         g.drawImage(image, x * 75,y * 75, null);
-        //TODO Render Image
     }
 
 

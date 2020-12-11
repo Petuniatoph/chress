@@ -15,6 +15,18 @@ public class Queen extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        if(Math.abs(this.x - x) == Math.abs(this.y - y))
+        {
+            return Flag.LEGAL;
+        }
+        if(this.x == x && this.y == y)
+        {
+            return Flag.ILLEGAL;
+        }
+        if(this.y == y || this.x == x)
+        {
+            return Flag.LEGAL;
+        }
+        return Flag.ILLEGAL;
     }
 }

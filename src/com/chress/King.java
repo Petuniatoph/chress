@@ -15,6 +15,14 @@ public class King extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        if ((Math.abs(this.x - x) > 1) || (Math.abs(this.y - y) > 1))
+        {
+            return Flag.ILLEGAL;
+        }
+        if ((Math.abs(this.x - x) == 0) && (Math.abs(this.y - y) == 0))
+        {
+            return Flag.ILLEGAL;
+        }
+        return Flag.LEGAL;
     }
 }
