@@ -13,7 +13,7 @@ import java.awt.event.MouseListener;
 
 public class Game extends Canvas
 {
-    private static final int WIDTH = 750;
+    private static final int WIDTH = 616;
     private static final int HEIGHT = 636;
     private final int BOARD = 75;
     private final PieceHandler pieceHandler;
