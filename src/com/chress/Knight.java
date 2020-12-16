@@ -15,6 +15,28 @@ public class Knight extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return null;
+        if(this.x + 2 == x && ((this.y - 1 == y) || (this.y + 1 == y)))
+        {
+            return Flag.LEGAL;
+        }
+        if(this.x - 2 == x && ((this.y - 1 == y) || (this.y + 1 == y)))
+        {
+            return Flag.LEGAL;
+        }
+        if(this.y + 2 == y && ((this.x - 1 == x) || (this.x + 1 == x)))
+        {
+            return Flag.LEGAL;
+        }
+        if(this.y - 2 == y && ((this.x - 1 == x) || (this.x + 1 == x)))
+        {
+            return Flag.LEGAL;
+        }
+        return Flag.ILLEGAL;
+    }
+
+    @Override
+    public Flag validateMovement(int startX, int startY, int endX, int endY)
+    {
+        return Flag.LEGAL;
     }
 }

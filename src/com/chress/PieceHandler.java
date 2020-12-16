@@ -2,7 +2,11 @@ package com.chress;
 
 import com.chress.enums.Flag;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.security.spec.ECField;
 import java.util.LinkedList;
 
 /**
@@ -14,14 +18,21 @@ import java.util.LinkedList;
 
 public class PieceHandler
 {
-    //TODO make list final
     private final LinkedList<Piece> player1;
     private final LinkedList<Piece> player2;
     private Piece selectedPiece = null;
     private Color currentPlayer;
+    protected BufferedImage image;
 
     public PieceHandler()
     {
+        try
+        {
+            image = ImageIO.read(new File(System.getProperty("user.dir") + "\\target.png"));
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         this.currentPlayer = Color.WHITE;
         player1 = new LinkedList<>();
         player2 = new LinkedList<>();
@@ -86,7 +97,7 @@ public class PieceHandler
         for(int i = 0; i < player1.size(); i++)
         {
             piece = player1.get(i);
-            if(piece.getX() == x && piece.getY() == y)
+            if(piece.getX() == x && piece.getY() == y && piece.getIsAlive())
             {
                 return piece;
             }
@@ -94,7 +105,7 @@ public class PieceHandler
         for(int i = 0; i < player2.size(); i++)
         {
             piece = player2.get(i);
-            if(piece.getX() == x && piece.getY() == y)
+            if(piece.getX() == x && piece.getY() == y && piece.getIsAlive())
             {
                 return piece;
             }
@@ -142,14 +153,25 @@ public class PieceHandler
         }
     }
 
-    public synchronized void movePiece(int x, int y)
+    /**
+     * MOVE PIECE
+     * @param x
+     * @param y
+     */
+
+    public void movePiece(int x, int y)
     {
         Piece tempPiece = selectPiece(x, y);
+        if(outOfField(x, y)) return;
         if(selectedPiece != null)
         {
             if(tempPiece == null)
             {
-                if(selectedPiece.movePiece(x,y) != Flag.ILLEGAL) return;
+                if(selectedPiece.movePiece(x,y) == Flag.ILLEGAL)
+                {
+                    System.out.println("Illegal MOve");
+                    return;
+                }
                 selectedPiece = null;
                 nextPlayer();
                 return;
@@ -159,7 +181,7 @@ public class PieceHandler
                 selectedPiece = tempPiece;
                 return;
             }
-            if(selectedPiece.movePiece(x,y) != Flag.ILLEGAL) return;
+            if(selectedPiece.movePiece(x,y) == Flag.ILLEGAL) return;
             selectedPiece = null;
             nextPlayer();
             return;
@@ -171,7 +193,11 @@ public class PieceHandler
         }
     }
 
-    public synchronized void nextPlayer()
+    /**
+     *
+     */
+
+    public void nextPlayer()
     {
         if(currentPlayer == Color.WHITE)
         {
@@ -181,10 +207,53 @@ public class PieceHandler
         currentPlayer = Color.WHITE;
     }
 
+    /**
+     *
+     * @param g
+     */
 
-    public void tick()
+
+    void renderPossibleMoves(Graphics g)
     {
+        if(selectedPiece == null)
+        {
+            return;
+        }
 
+        int saveX = selectedPiece.getX();
+        int saveY = selectedPiece.getY();
+        int saveTargetX = -1;
+        int saveTargetY = -1;
+        Piece pieceTemp;
+
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                pieceTemp = selectPiece(x, y);
+                if(pieceTemp != null)
+                {
+                    saveTargetX = pieceTemp.getX();
+                    saveTargetY = pieceTemp.getY();
+                }
+                if(selectedPiece.movePiece(x, y) != Flag.ILLEGAL)
+                {
+                    g.drawImage(image, x*75, y*75,null);
+                }
+                if(pieceTemp != null)
+                {
+                    pieceTemp.setX(saveTargetX);
+                    pieceTemp.setY(saveTargetY);
+                    pieceTemp.setAlive(true);
+                }
+                selectedPiece.setX(saveX);
+                selectedPiece.setY(saveY);
+            }
+        }
     }
 
+    public boolean outOfField(int x, int y)
+    {
+        return x > 7 || x < 0 || y > 7 || y < 0;
+    }
 }

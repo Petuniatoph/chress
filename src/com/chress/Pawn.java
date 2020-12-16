@@ -16,6 +16,35 @@ public class Pawn extends Piece
     @Override
     protected Flag validateTarget(int x, int y)
     {
-        return Flag.LEGAL;
+        if(pieceHandler.selectPiece(x,y) == null)
+        {
+            if(Math.abs(this.x - x) != 0)
+            {
+                return Flag.ILLEGAL;
+            }
+            if(color == Color.WHITE)
+            {
+                if(this.y - y == 1) return Flag.LEGAL;
+                if(this.y == 6 && this.y - y == 2) return Flag.LEGAL;
+            }
+            if(color == Color.BLACK)
+            {
+                if(y - this.y == 1) return Flag.LEGAL;
+                if(this.y == 1 && y - this.y == 2) return Flag.LEGAL;
+            }
+        }
+        if(Math.abs(this.x - x) != 1)
+        {
+            return Flag.ILLEGAL;
+        }
+        if(color == Color.WHITE)
+        {
+            if(this.y - y == 1) return Flag.LEGAL;
+        }
+        if(color == Color.BLACK)
+        {
+            if(y - this.y == 1) return Flag.LEGAL;
+        }
+        return Flag.ILLEGAL;
     }
 }
